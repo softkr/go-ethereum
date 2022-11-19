@@ -1,0 +1,113 @@
+# docker-compose配置文件版本
+version: '3.5'
+# docker中网络的定义
+networks:
+  # 网络使用固定的网段
+  aqchain_network:
+    ipam:
+      config:
+        # 子网段
+        - subnet: 172.20.0.0/16
+services:
+  # 网络发现节点
+  bootnode:
+    # 容器名称
+    container_name: bootnode
+    # 使用定义的blockchain网络
+    networks:
+      aqchain_network:
+        # 定义静态的IP
+        ipv4_address: 172.20.0.10
+    ports:
+      # 修改端口映射
+      - "13031:30301"
+      - "13031:30301/udp"
+    # 镜像名称
+    image: ganyu7595296/aqchain_go-ethereum
+    command:
+      - bootnode
+    # 将宿主机文件共享 需要根据自己的环境修改
+    volumes:
+      - /root/go-ethereum/data/bootnode:/nodedata
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Shanghai
+  # 区块链节点1
+  node_1:
+    # 容器名称
+    container_name: node_1
+    # 使用定义的blockchain网络
+    networks:
+      aqchain_network:
+        # 定义静态的IP
+        ipv4_address: 172.20.0.11
+    # 镜像名称
+    image: ganyu7595296/aqchain_go-ethereum
+    depends_on:
+      - bootnode
+    command:
+      - aqchain
+    ports:
+      # 修改端口映射
+      - "15450:8545"
+      - "15460:8546"
+      - "13030:30303"
+      - "13030:30303/udp"
+      - "13040:30304/udp"
+    # 将宿主机文件共享
+    volumes:
+      - /root/go-ethereum/data/node1:/nodedata
+    # 运行和交互
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Shanghai
+
+  # 节点2
+  node_2:
+    container_name: node_2
+    networks:
+      aqchain_network:
+        ipv4_address: 172.20.0.12
+    image: ganyu7595296/aqchain_go-ethereum
+    depends_on:
+      - node_1
+    command:
+      - aqchain
+    ports:
+      - "25450:8545"
+      - "25460:8546"
+      - "23030:30303"
+      - "23030:30303/udp"
+      - "23040:30304/udp"
+    volumes:
+      - /root/go-ethereum/data/node2:/nodedata
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Shanghai
+
+  # 节点3
+  node_3:
+    container_name: node_3
+    networks:
+      aqchain_network:
+        ipv4_address: 172.20.0.13
+    image: ganyu7595296/aqchain_go-ethereum
+    depends_on:
+      - node_2
+    command:
+      - aqchain
+    ports:
+      - "45450:8545"
+      - "45460:8546"
+      - "43030:30303"
+      - "43030:30303/udp"
+      - "43040:30304/udp"
+    volumes:
+      - /root/go-ethereum/data/node3:/nodedata
+    stdin_open: true
+    tty: true
+    environment:
+      TZ: Asia/Shanghai

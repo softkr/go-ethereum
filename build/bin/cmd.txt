@@ -1,0 +1,10 @@
+./abigen --sol contract/FileStorage.sol --pkg contract --out contract/fileStorage.go
+
+./aqchain --datadir ./node1 init genesis.json
+./aqchain --datadir ./node1 --syncmode 'full' --port 30311 --rpc --rpcaddr '0.0.0.0' --rpcport 8501 --rpccorsdomain="*" --rpcapi 'personal,db,eth,net,web3,txpool,miner,net' --ws --wsaddr '0.0.0.0' --wsport 8551 --wsorigins '*' --wsapi 'personal,db,eth,net,web3,txpool,miner,net' --bootnodes 'enode://5847e67fae8f77aa9965e794e304429278039b741c3859219af15b6615450d5d08dc92a8d315ef62a14d86706ed90e6acce0e6d6c72982f050916dc91c182212@[127.0.0.1]:30301'  --networkid 1000 -unlock '0xfc97a1a683fb0108299d5725bc9d72899c9a86b4' --password ./node1/password.txt --mine
+
+./aqchain --datadir ./node2 init genesis.json
+./aqchain --datadir ./node2 --syncmode 'full' --port 30312 --rpc --rpcaddr '0.0.0.0' --rpcport 8502 --rpccorsdomain="*" --rpcapi 'personal,db,eth,net,web3,txpool,miner,net' --ws --wsaddr '0.0.0.0' --wsport 8552 --wsorigins '*' --wsapi 'personal,db,eth,net,web3,txpool,miner,net' --bootnodes 'enode://5847e67fae8f77aa9965e794e304429278039b741c3859219af15b6615450d5d08dc92a8d315ef62a14d86706ed90e6acce0e6d6c72982f050916dc91c182212@[127.0.0.1]:30301'  --networkid 1000 -unlock 'b01d3dd946d3e2e1f3bf7ba86ff03864f8af47cd' --password ./node2/password.txt --mine
+
+./aqchain --datadir ./node3 init genesis.json
+./aqchain --datadir ./node3 --syncmode 'full' --port 30313 --rpc --rpcaddr '0.0.0.0' --rpcport 8503 --rpccorsdomain="*" --rpcapi 'personal,db,eth,net,web3,txpool,miner,net' --ws --wsaddr '0.0.0.0' --wsport 8553 --wsorigins '*' --wsapi 'personal,db,eth,net,web3,txpool,miner,net' --bootnodes 'enode://5847e67fae8f77aa9965e794e304429278039b741c3859219af15b6615450d5d08dc92a8d315ef62a14d86706ed90e6acce0e6d6c72982f050916dc91c182212@[127.0.0.1]:30301'  --networkid 1000 -unlock 'bfa6f96861798532a334fd0df82e9f26c626dc59' --password ./node3/password.txt --mine
